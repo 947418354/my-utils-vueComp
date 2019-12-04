@@ -20,7 +20,7 @@ const isLeapYear = (currentFullYear) => {
 
 /**
  * 得到格式化后的日期字符串
- * @param date 日期对象
+ * @param date 任何支持 new Date(date) 的参数,包括日期对象 时间戳 日期字符串
  * @param join 日期拼接符
  */
 function formatDate(date, join) {
