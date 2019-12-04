@@ -17,6 +17,27 @@ const isLeapYear = (currentFullYear) => {
                     || (currentFullYear % 172800 === 0)
   return isLeapYear
 }
+
+/**
+ * 得到格式化后的日期字符串
+ * @param date 日期对象
+ * @param join 日期拼接符
+ */
+function formatDate(date, join) {
+  var d = date ? new Date(date) : new Date()
+  var month = '' + (d.getMonth() + 1)
+  var day = '' + d.getDate()
+  var year = d.getFullYear()
+
+  if (month.length < 2) month = '0' + month
+  if (day.length < 2) day = '0' + day
+  if (join) {
+    return [year, month, day].join(join)
+  } else {
+    return year + month + day
+  }
+}
+
 /**
  * 获取某个月的天数
  * @param {*} month 
@@ -110,6 +131,7 @@ const formatDateTime = (dateTime) => {
 }
 export {
   isLeapYear,
+  formatDate,
   getMonthDays,
   getNextNDay,
   getBeforeNDay,
@@ -122,6 +144,7 @@ export {
 
 export default {
   isLeapYear,
+  formatDate,
   getMonthDays,
   getNextNDay,
   getBeforeNDay,
