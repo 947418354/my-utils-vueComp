@@ -27,7 +27,6 @@ function getVerify(id17) {
   else if (t == 10) checknum = "2";
   return checknum
 }
-
 /**
  * 生成身份证
  * @opt? {areaCode,areaName,
@@ -84,7 +83,50 @@ function generateID(opt) {
   let checknum = getVerify(id17)
   return id17 + checknum
 }
+/**
+ * 得到身份证相关信息
+ */
+function getAgeByID(id) {
+  const birth8 = id.slice(6, 8)
+  let y = birth8.slice(0, 4)
+  let m = birth8.slice(4, 2)
+  let d = birth8.slice(6, 2)
+  let now = new Date()
+  let ny = now.getFullYear()
+  let nm = now.getMonth() + 1
+  let nd = now.getDate()
+  let dy = ny - y
+  let dm = nm - m
+  let dd = nd - d
+  if (dm > 0 || (dm === 0 && dd >= 0)) {
+    return dy + 1
+  } else {
+    return dy
+  }
+}
+function getBirthByID(id, join) {
+  let birth8 = id.slice(6, 8)
+  if (join) {
+    let y = birth8.slice(0, 4)
+    let m = birth8.slice(4, 2)
+    let d = birth8.slice(6, 2)
+    return y + join + m + join + d
+  } else {
+    return birth8
+  }
+}
+function getSexCodeByID(id) {
+  let sexCode = parseInt(id.slice(id.length - 2, 1))
+  if (sexCode % 2 === 0) {
+    return 0
+  } else {
+    return 1
+  }
+}
 
 export default {
   generateID,
+  getAgeByID,
+  getBirthByID,
+  getSexCodeByID,
 }
