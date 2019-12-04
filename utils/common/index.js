@@ -86,18 +86,7 @@ export default {
     }
     return 0
   },
-  // 格式化日期 YYYY-MM-DD, date为时间戳
-  formatDate (date) {
-    var d = date ? new Date(date) : new Date()
-    var month = '' + (d.getMonth() + 1)
-    var day = '' + d.getDate()
-    var year = d.getFullYear()
-
-    if (month.length < 2) month = '0' + month
-    if (day.length < 2) day = '0' + day
-
-    return [year, month, day].join('-')
-  },
+  
   // 高德地图 获取城市名称
   getCity () {
     return new Promise((resolve) => {
