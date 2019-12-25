@@ -23,19 +23,28 @@ const isLeapYear = (currentFullYear) => {
  * @param date 任何支持 new Date(date) 的参数,包括日期对象 时间戳 日期字符串
  * @param join 日期拼接符
  */
-function formatDate(date, join) {
+export function formatDate(date, join) {
   var d = date ? new Date(date) : new Date()
   var month = '' + (d.getMonth() + 1)
   var day = '' + d.getDate()
   var year = d.getFullYear()
 
   if (month.length < 2) month = '0' + month
-  if (day.length < 2) day = '0' + day
-  if (join) {
-    return [year, month, day].join(join)
-  } else {
-    return year + month + day
-  }
+	if (day.length < 2) day = '0' + day
+	switch (join) {
+		case '年':
+			return `${year}年${month}月${day}日`
+			break;
+		case '-':
+			return [year, month, day].join(join)
+			break;
+		case '/':
+			return [year, month, day].join(join)
+			break;
+		default:
+			return year + month + day
+			break;
+	}
 }
 
 /**
