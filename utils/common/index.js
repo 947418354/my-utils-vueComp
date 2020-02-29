@@ -1,5 +1,30 @@
 import { VALIDATOR } from '@/utils'
 
+/**
+ * 深拷贝函数
+ * @param {对象 数组} obj 
+ */
+export function deepCopy(obj) {
+  if (obj === null || typeof obj !== 'object') return obj;
+  var cpObj = obj instanceof Array ? [] : {};
+  for (var key in obj) cpObj[key] = deepCopy(obj[key]);
+  return cpObj;
+}
+
+function deepCopy1(data) {
+  if (!data || !(data instanceof Object) || (typeof data == "function")) {
+    return data || undefined;
+  }
+  var constructor = data.constructor;
+  var result = new constructor();
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      result[key] = deepCopy1(data[key]);
+    }
+  }
+  return result;
+}
+
 // 检查对象是否有值为空
 const checkObjectValues = (data) => {
   const values = Object.values(data);
