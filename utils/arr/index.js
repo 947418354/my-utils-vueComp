@@ -1,3 +1,17 @@
+/**
+ * 数组去重
+ * @param {待去重数组} arr 
+ */
+export function arrDelSame(arr) {
+  var result = [];
+  for (var i = 0, len = arr.length; i < len; i++) {
+    if (!~result.indexOf(arr[i])) {
+      result.push(arr[i]);
+    }
+  }
+  return result
+}
+
 function addChildren(arr, treeArr) {
   let ifFind = false
   let destinIndex
@@ -67,7 +81,7 @@ let ouput = [{
 }]
  * @param {二维数组} twoArr 
  */
-export function testFive(twoArr) {
+export function twoArrToTree(twoArr) {
   let tree = []
   twoArr.forEach((ele, i) => {
     addChildren(ele, tree)
