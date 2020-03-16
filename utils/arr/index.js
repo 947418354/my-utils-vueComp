@@ -13,7 +13,7 @@ export function arrDelSame(arr) {
 }
 
 /**
- * 在指定对象数组中寻找带有指定键值对的对象  getObjInobjArr
+ * 在对象数组中寻找带有指定键值对的对象
  * @param {键} key
  * @param {值} val
  * @param {对象数组} arr
