@@ -4,6 +4,7 @@
  * 返回Number,单位px
  */
 export function getElementTop(element) {
+  // git测试
   var actualTop = element.offsetTop
   var current = element.offsetParent
   while (current !== null) {
