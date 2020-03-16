@@ -12,6 +12,21 @@ export function arrDelSame(arr) {
   return result
 }
 
+/**
+ * 在指定对象数组中寻找带有指定键值对的对象  getObjInobjArr
+ * @param {键} key
+ * @param {值} val
+ * @param {对象数组} arr
+ */
+export function getObjInobjArr (key, val, arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][key] === val) {
+      return arr[i]
+    }
+  }
+  return null
+}
+
 function addChildren(arr, treeArr) {
   let ifFind = false
   let destinIndex
