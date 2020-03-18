@@ -1,4 +1,3 @@
-import { VALIDATOR } from '@/utils'
 
 /**
  * 深拷贝函数
@@ -25,72 +24,68 @@ function deepCopy1(data) {
   return result;
 }
 
-// 检查对象是否有值为空
-const checkObjectValues = (data) => {
-  const values = Object.values(data);
-  if (values && values.length) {
-    const hasEmptyValue = values.includes('');
-    return !hasEmptyValue;
+/**
+ * 防抖函数
+ * @param {被防抖函数} handler 
+ * @param {防抖延时} delay 
+ */
+export function debounce(handler, delay) {
+  let timer = null //利用闭包保存同一个timer
+  return function () {
+    let _self = this //取debounce执行作用域的this
+    let _arg = arguments //利用闭包保存参数数组
+    clearTimeout(timer) //不断的执行函数不断的清除定时器
+    timer = setTimeout(() => {
+      handler.apply(_self, _arg) //用apply指向调用debounce的对象，相当于_this.handler(args);
+    }, delay)
   }
-  return true;
 }
-// 检查信息是否填写齐全
-const checkFormCompleted = (data) => {
-  if (data) {
-    let checkObject = null;
-    if(Object.prototype.toString.call(data) === '[object Object]') {
-      return checkObjectValues(data);
-    } else if (Object.prototype.toString.call(data) === '[object Array]') {
-      for (let i = 0; i < data.length; i++) {
-        const isCompleted = checkObjectValues(data[i]);
-        if (!isCompleted) {
-          return isCompleted;
-        }
-      }
-      return true;
-    }
-  }
-  return true;
-}
-export default {
-  // 是否为空字符串
-  isNulls (str) {
-    if (str == null || str == 'null' || str == '') {
-      return true
-    } else if (typeof str === 'string') {
-      return str.trim() == ''
-    } else {
-      return false
-    }
-  },
-  // 是否为空对象
-  isEmptyObject(o) {
-    var tmp
-    for (tmp in o) {
-      return false
-    }
-    return true
-  },
-  getUUid () {
-    var s = []
-    var hexDigits = '0123456789abcdef'
-    for (var i = 0; i < 32; i++) {
-      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
-    }
-    s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = '-'
 
-    var uuid = s.join('')
-    return uuid
-  },
+/**
+ * 节流函数
+ * @param {被节流函数} handler 
+ * @param {节流时间间隔} time 
+ * @param {节流模式:是否 立即模式} immediately 
+ */
+export function throttle(handler, time, immediately) {
+  if (immediately === undefined) {
+    immediately = true //判断需要先立即执行
+  }
+  if (immediately) {
+    let t
+    return () => {
+      let _self = this //取throttle 执行作用域的this
+      let _arg = arguments //利用闭包保存参数数组
+      if (!t || Date.now() - t >= time) {
+        handler.apply(_self, _arg);
+        t = Date.now(); //得到的当前时间戳
+      }
+    }
+  }
+  else {
+    let timer
+    return () => {
+      if (timer) {
+        return //判断如果有计时器不清零直接返回啥也不做
+      }
+      let _self = this //取throttle 执行作用域的this
+      let _arg = arguments //利用闭包保存参数数组
+      timer = setTimeout(() => {
+        handle.apply(_self, _arg)
+        timer = null
+      }, time)
+    }
+  }
+}
+
+export default {
   /**
      * @see 比较app版本号
      * @param {*} version-a
      * @param {*} version-b
      * @return  a > b ? 1 : (a == b ? 0 : -1)
      */
-  appVersionCompare (a, b) {
+  appVersionCompare(a, b) {
     let pa = String(a).split('.')
     let pb = String(b).split('.')
     for (let i = 0; i < 3; i++) {
@@ -111,51 +106,13 @@ export default {
     }
     return 0
   },
-  
-  // 高德地图 获取城市名称
-  getCity () {
-    return new Promise((resolve) => {
-      if (AMap && AMap.CitySearch) {
-        new AMap.CitySearch().getLocalCity((status, result) => { // eslint-disable-line
-          if (status === 'complete' && result.info === 'OK' && result.city) {
-            resolve(result.city.replace('市', ''))
-          } else {
-            resolve('深圳')
-          }
-        })
-      } else {
-        resolve('深圳')
-      }
-    })
-  },
-  // 函数节流
-  throttle (fn, delay, atleast) {
-    /** 函数节流方法: fn 延时调用函数; dalay 延迟多长时间; atleast 至少多长时间触发一次; return function 延迟执行的方法;***/
-    let timer = null
-    let previous = null
-    return function () {
-      var now = +new Date()
-      if (!previous) previous = now
-      if (atleast && now - previous > atleast) {
-        fn()
-        // 重置上一次开始时间为本次结束时间
-        previous = now
-        clearTimeout(timer)
-      } else {
-        clearTimeout(timer)
-        timer = setTimeout(function () {
-          fn()
-          previous = null
-        }, delay)
-      }
-    }
-  },
+
   // 价格取整
-  integerPrice (num = '') {
+  integerPrice(num = '') {
     return String(num).replace(/\.00/g, '')
   },
   // 不足10数字前补零
-  paddingZero (num) {
+  paddingZero(num) {
     if (num < 10) {
       return '0' + num
     }
@@ -163,31 +120,31 @@ export default {
   },
   // 小数减法
   accNumberSub(arg1, arg2) {
-      if (isNaN(arg1)) {
-          arg1 = 0;
-      }
-      if (isNaN(arg2)) {
-          arg2 = 0;
-      }
-      arg1 = Number(arg1);
-      arg2 = Number(arg2);
+    if (isNaN(arg1)) {
+      arg1 = 0;
+    }
+    if (isNaN(arg2)) {
+      arg2 = 0;
+    }
+    arg1 = Number(arg1);
+    arg2 = Number(arg2);
 
-      var r1, r2, m, n;
-      try {
-          r1 = arg1.toString().split(".")[1].length;
-      }
-      catch (e) {
-          r1 = 0;
-      }
-      try {
-          r2 = arg2.toString().split(".")[1].length;
-      }
-      catch (e) {
-          r2 = 0;
-      }
-      m = Math.pow(10, Math.max(r1, r2));  //动态控制精度长度
-      n = (r1 >= r2) ? r1 : r2;
-      return ((arg1 * m - arg2 * m) / m).toFixed(n);
+    var r1, r2, m, n;
+    try {
+      r1 = arg1.toString().split(".")[1].length;
+    }
+    catch (e) {
+      r1 = 0;
+    }
+    try {
+      r2 = arg2.toString().split(".")[1].length;
+    }
+    catch (e) {
+      r2 = 0;
+    }
+    m = Math.pow(10, Math.max(r1, r2));  //动态控制精度长度
+    n = (r1 >= r2) ? r1 : r2;
+    return ((arg1 * m - arg2 * m) / m).toFixed(n);
   },
   // 获取第一个refs, 兼容ref为数组的情况下
   getFirstRef(ref) {
