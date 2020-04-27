@@ -39,6 +39,13 @@ function removeDuplicate(arr) {
 }
 
 /*
+任意元素类型多维数组降一维
+*/
+function deepFlat(arr) {
+  return [].concat(...arr.map(v => Array.isArray(v) ? deepFlat(v) : v))
+}
+
+/*
 短杠命名转驼峰命名
 */
 function shortToCamel(foo) {
