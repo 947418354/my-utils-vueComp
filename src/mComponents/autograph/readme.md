@@ -1,3 +1,5 @@
+这是一个移动端个性签名组件
+
 <autograph
       ref="autograph"
       :disabled="disabled"
