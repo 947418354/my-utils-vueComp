@@ -1,5 +1,5 @@
 /**
- * 字符串模板替换
+ * 字符串模板替换.
  * @param {被处理的字符串} str "你好$name，欢迎到$home。这是你第$count次来$home"
  * @param {提供数据的对象} obj {
       name: 'jack',
