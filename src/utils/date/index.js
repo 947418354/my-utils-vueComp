@@ -2,8 +2,6 @@
  * 有关时间的常用方法
  */
 
-import COMMON from '../common'
-
 const MILLSECONDS_OF_DAY = 86400000
 const MILLSECONDS_OF_HOUR = 3600000
 
@@ -16,40 +14,6 @@ const isLeapYear = (currentFullYear) => {
                     || (currentFullYear % 400 === 0 && currentFullYear % 3200 !== 0) 
                     || (currentFullYear % 172800 === 0)
   return isLeapYear
-}
-
-/**
- * 是否为闰年
- * @param {number} currentDay 
- */
-export const isLeapYear = (currentFullYear) => {
-  let isLeapYear =  (currentFullYear % 100 !== 0 && currentFullYear % 4 === 0) 
-                    || (currentFullYear % 400 === 0 && currentFullYear % 3200 !== 0) 
-                    || (currentFullYear % 172800 === 0)
-  return isLeapYear
-}
-
- /**
-  * 自然日期加法
-  * @param {*} currentDay 
-  * @param {*} n 
-  */
-export const getNextNNatureYear = (currentDay, n) => {
-  let splitDate = currentDay.split('-')
-  let year = splitDate[0]
-  let month = splitDate[1]
-  let day = splitDate[2]
-  
-  let targetYear = Number(year) + n
-  if (isLeapYear(Number(year)) && month == 2 && day == 29) {
-    if (isLeapYear(Number(targetYear))) {
-      return [targetYear, month, day].join('-')
-    } else {
-      return [targetYear, month, Number(day) - 1].join('-')
-    }
-  } else {
-    return [targetYear, month, day].join('-')
-  }
 }
 
 /**
@@ -96,24 +60,6 @@ const getMonthDays = (month, isLeap) => {
   } else {
     return 30
   }
-}
-
- /**
-  * 获取第N天
-  * @param {*} date 
-  */
-const getNextNDay = (date, n = 1) => {
-  let currentDay = date ? new Date(date).getTime() : Date.now()
-  return COMMON.formatDate(currentDay + n * MILLSECONDS_OF_DAY)
-}
-
- /**
-  * 获取前N天
-  * @param {*} date 
-  */
- const getBeforeNDay = (date, n = 1) => {
-  let currentDay = date ? new Date(date).getTime() : Date.now()
-  return COMMON.formatDate(currentDay - n * MILLSECONDS_OF_DAY)
 }
 
  /**
@@ -172,6 +118,24 @@ const formatDateTime = (dateTime) => {
   let second = now.getSeconds()
   return [year, month, date].join('-') + ' ' + [hour, minute, second].join(':')
 }
+
+/**
+ * 根据时间戳返回本地会话聊天记录时间,今天某时某分 昨天 之前
+ * @param {时间戳} timestamp 
+ */
+export function timestampToConversation(timestamp) {
+  const now = Date.now()
+  if(now - timestamp < MILLSECONDS_OF_DAY) {
+    const exp = /[\u4E00-\u9FA5]+[0-9]+:[0-9]+/
+    const localeString = new Date(timestamp).toLocaleString
+    return exp.exec(localeString)[0]
+  } else if (MILLSECONDS_OF_DAY <= now - timestamp < 2 * MILLSECONDS_OF_DAY) {
+    return '昨天'
+  } else {
+    return new Date(timestamp).toLocaleDateString
+  }
+}
+
 export {
   isLeapYear,
   formatDate,
