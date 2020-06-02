@@ -21,7 +21,7 @@ const isLeapYear = (currentFullYear) => {
  * @param date 任何支持 new Date(date) 的参数,包括日期对象 时间戳 日期字符串
  * @param join 日期拼接符
  */
-export function formatDate(date, join) {
+function formatDate(date, join) {
   var d = date ? new Date(date) : new Date()
   var month = '' + (d.getMonth() + 1)
   var day = '' + d.getDate()
@@ -127,7 +127,7 @@ export function timestampToConversation(timestamp) {
   const now = Date.now()
   if(now - timestamp < MILLSECONDS_OF_DAY) {
     const exp = /[\u4E00-\u9FA5]+[0-9]+:[0-9]+/
-    const localeString = new Date(timestamp).toLocaleString
+    const localeString = new Date(timestamp).toLocaleString()
     return exp.exec(localeString)[0]
   } else if (MILLSECONDS_OF_DAY <= now - timestamp < 2 * MILLSECONDS_OF_DAY) {
     return '昨天'
@@ -140,8 +140,6 @@ export {
   isLeapYear,
   formatDate,
   getMonthDays,
-  getNextNDay,
-  getBeforeNDay,
   getNextNNatureYear,
   getDaysBetween,
   getIOSAdapterDateString,
@@ -153,8 +151,6 @@ export default {
   isLeapYear,
   formatDate,
   getMonthDays,
-  getNextNDay,
-  getBeforeNDay,
   getNextNNatureYear,
   getDaysBetween,
   getIOSAdapterDateString,
