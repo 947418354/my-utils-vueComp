@@ -18,7 +18,7 @@ export function arrDelSame(arr) {
  * @param {值} val
  * @param {对象数组} arr
  */
-export function getObjInobjArr (key, val, arr) {
+export function getObjInobjArrByPropVal (key, val, arr) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][key] === val) {
       return arr[i]
