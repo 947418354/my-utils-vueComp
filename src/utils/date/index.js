@@ -115,7 +115,8 @@ const formatDateTime = (dateTime) => {
   let date = now.getDate()
   let hour = now.getHours()
   let minute = now.getMinutes()
-  let second = now.getSeconds()
+  let second = now.getSeconds() + ''
+  if (second.length === 1) second = '0' + second
   return [year, month, date].join('-') + ' ' + [hour, minute, second].join(':')
 }
 
