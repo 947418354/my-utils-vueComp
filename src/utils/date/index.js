@@ -107,17 +107,21 @@ const isDateString = (datestr) => {
 }
 
 // 时间搓转日期时间
-// 格式化日期 YYYY-MM-DD HH:MM:SS
+// 格式化日期 YYYY/MM/DD HH:MM:SS
 const formatDateTime = (dateTime) => {
   let now = dateTime ? new Date(dateTime) : new Date()
   let year = now.getFullYear()
-  let month = now.getMonth() + 1
-  let date = now.getDate()
-  let hour = now.getHours()
-  let minute = now.getMinutes()
+  let month = (now.getMonth() + 1) + ''
+  let date = now.getDate() + ''
+  let hour = now.getHours() + ''
+  let minute = now.getMinutes() + ''
   let second = now.getSeconds() + ''
+  if (month.length === 1) month = '0' + month
+  if (date.length === 1) date = '0' + date
+  if (hour.length === 1) hour = '0' + hour
+  if (minute.length === 1) minute = '0' + minute
   if (second.length === 1) second = '0' + second
-  return [year, month, date].join('-') + ' ' + [hour, minute, second].join(':')
+  return [year, month, date].join('/') + ' ' + [hour, minute, second].join(':')
 }
 
 /**

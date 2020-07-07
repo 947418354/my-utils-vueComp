@@ -1,3 +1,4 @@
+/* eslint-disable */
 //浅拷贝函数
 function shallowCopy(target){
 	var obj;
