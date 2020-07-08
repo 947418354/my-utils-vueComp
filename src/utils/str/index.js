@@ -1,4 +1,14 @@
 /**
+ * 得到url中指定的参数值
+ * @param {参数名 String} name 
+ */
+export function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var reg = new RegExp("[\\?&]" + name + "=([^&#\/]*)"), results = reg.exec(location.search);
+  return results == null ? "" : decodeURIComponent(results[1]);
+}
+
+/**
  * 字符串模板替换
  * @param {被处理的字符串} str "你好$name，欢迎到$home。这是你第$count次来$home"
  * @param {提供数据的对象} obj {
@@ -66,7 +76,7 @@ export function strSplitByWords(str, words) {
  * @param {随机长度终值} maxL 
  */
 export function getRandomStr(minL, maxL) {
-  if(!maxL) maxL = minL
+  if (!maxL) maxL = minL
   var str = "",
     range = minL, //min
     arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
