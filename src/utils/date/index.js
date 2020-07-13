@@ -129,15 +129,30 @@ const formatDateTime = (dateTime) => {
  * @param {时间戳} timestamp 
  */
 export function timestampToConversation(timestamp) {
-  const now = Date.now()
-  if(now - timestamp < MILLSECONDS_OF_DAY) {
-    const exp = /[\u4E00-\u9FA5]+[0-9]+:[0-9]+/
-    const localeString = new Date(timestamp).toLocaleString()
-    return exp.exec(localeString)[0]
-  } else if (MILLSECONDS_OF_DAY <= now - timestamp < 2 * MILLSECONDS_OF_DAY) {
-    return '昨天'
+  const nowDate = new Date()
+  const logDate = new Date(timestamp)
+  const nowYear = nowDate.getFullYear()
+  // const nowMonth = nowDate.getMonth() + 1
+  const nowRi = nowDate.getDate()
+  const logYear = logDate.getFullYear()
+  // const logMonth = logDate.getMonth() + 1
+  const logRi = logDate.getDate()
+  const logLocaleString = logDate.toLocaleString()
+
+  if (nowYear - logYear === 0) {
+    if (nowRi - logRi === 0) {
+      const exp = /[\u4E00-\u9FA5]+[0-9]+:[0-9]+/
+      const localeString = new Date(timestamp).toLocaleString()
+      return exp.exec(localeString)[0]
+    } else if (nowRi - logRi === 1) {
+      // return '昨天'
+      return logLocaleString.slice(5, -3)
+    } else {
+      // 3/3 上午12:03
+      return logLocaleString.slice(5, -3)
+    }
   } else {
-    return new Date(timestamp).toLocaleDateString
+    return logDate.toLocaleDateString()
   }
 }
 
