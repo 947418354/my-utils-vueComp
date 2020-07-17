@@ -10,9 +10,9 @@ const MILLSECONDS_OF_HOUR = 3600000
  * @param {number} currentDay 
  */
 const isLeapYear = (currentFullYear) => {
-  let isLeapYear =  (currentFullYear % 100 !== 0 && currentFullYear % 4 === 0) 
-                    || (currentFullYear % 400 === 0 && currentFullYear % 3200 !== 0) 
-                    || (currentFullYear % 172800 === 0)
+  let isLeapYear = (currentFullYear % 100 !== 0 && currentFullYear % 4 === 0)
+    || (currentFullYear % 400 === 0 && currentFullYear % 3200 !== 0)
+    || (currentFullYear % 172800 === 0)
   return isLeapYear
 }
 
@@ -28,21 +28,21 @@ function formatDate(date, join) {
   var year = d.getFullYear()
 
   if (month.length < 2) month = '0' + month
-	if (day.length < 2) day = '0' + day
-	switch (join) {
-		case '年':
-			return `${year}年${month}月${day}日`
-			break;
-		case '-':
-			return [year, month, day].join(join)
-			break;
-		case '/':
-			return [year, month, day].join(join)
-			break;
-		default:
-			return year + month + day
-			break;
-	}
+  if (day.length < 2) day = '0' + day
+  switch (join) {
+    case '年':
+      return `${year}年${month}月${day}日`
+      break;
+    case '-':
+      return [year, month, day].join(join)
+      break;
+    case '/':
+      return [year, month, day].join(join)
+      break;
+    default:
+      return year + month + day
+      break;
+  }
 }
 
 /**
@@ -52,7 +52,7 @@ function formatDate(date, join) {
  * 
  */
 const getMonthDays = (month, isLeap) => {
-  let month31 = [1,3,5,7,8,10,12]
+  let month31 = [1, 3, 5, 7, 8, 10, 12]
   if (month31.indexOf(+month)) {
     return 31
   } else if (+month === 2) {
@@ -62,17 +62,17 @@ const getMonthDays = (month, isLeap) => {
   }
 }
 
- /**
-  * 自然日期加法
-  * @param {*} currentDay 
-  * @param {*} n 
-  */
+/**
+ * 自然日期加法
+ * @param {*} currentDay 
+ * @param {*} n 
+ */
 const getNextNNatureYear = (currentDay, n) => {
   let splitDate = currentDay.split('-')
   let year = splitDate[0]
   let month = splitDate[1]
   let day = splitDate[2]
-  
+
   let targetYear = Number(year) + n
   if (isLeapYear(Number(year)) && month == 2 && day == 29) {
     if (isLeapYear(Number(targetYear))) {
@@ -124,6 +124,12 @@ const formatDateTime = (dateTime) => {
   return [year, month, date].join('/') + ' ' + [hour, minute, second].join(':')
 }
 
+// 聊天时间格式配置 China 24h
+// isShowSecond 是否显示秒?
+const timestampToConversationConfig = {
+  format: '24h',
+  isShowSecond: false,
+}
 /**
  * 根据时间戳返回本地会话聊天记录时间,今天某时某分 昨天 之前
  * @param {时间戳} timestamp 
@@ -137,22 +143,39 @@ export function timestampToConversation(timestamp) {
   const logYear = logDate.getFullYear()
   // const logMonth = logDate.getMonth() + 1
   const logRi = logDate.getDate()
-  const logLocaleString = logDate.toLocaleString()
+  const endIndex = timestampToConversationConfig.isShowSecond ? undefined : -3
 
-  if (nowYear - logYear === 0) {
-    if (nowRi - logRi === 0) {
-      const exp = /[\u4E00-\u9FA5]+[0-9]+:[0-9]+/
-      const localeString = new Date(timestamp).toLocaleString()
-      return exp.exec(localeString)[0]
-    } else if (nowRi - logRi === 1) {
-      // return '昨天'
-      return logLocaleString.slice(5, -3)
+  if (timestampToConversationConfig.format === '24h') {
+    const fmtDateTime = formatDateTime(timestamp)
+    if (nowYear - logYear === 0) {
+      if (nowRi - logRi === 0) {
+        return fmtDateTime.slice(11, endIndex)
+      } else if (nowRi - logRi === 1) {
+        // 昨天
+        return fmtDateTime.slice(5, endIndex)
+      } else {
+        return fmtDateTime.slice(5, endIndex)
+      }
     } else {
-      // 3/3 上午12:03
-      return logLocaleString.slice(5, -3)
+      return fmtDateTime.slice(0, endIndex)
     }
   } else {
-    return logDate.toLocaleDateString()
+    const logLocaleString = logDate.toLocaleString()
+    if (nowYear - logYear === 0) {
+      if (nowRi - logRi === 0) {
+        const exp = /[\u4E00-\u9FA5]+[0-9]+:[0-9]+/
+        const localeString = new Date(timestamp).toLocaleString()
+        return exp.exec(localeString)[0]
+      } else if (nowRi - logRi === 1) {
+        // return '昨天'
+        return logLocaleString.slice(5, -3)
+      } else {
+        // 3/3 上午12:03
+        return logLocaleString.slice(5, -3)
+      }
+    } else {
+      return logLocaleString
+    }
   }
 }
 
