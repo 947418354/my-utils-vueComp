@@ -42,3 +42,24 @@ export function checkElementInView(element) {
   }
   return true;
 }
+
+/**
+ * 缩放指定容器下的文本 以达到不换行又能在固定容器下显示完整的文案
+ * @param ele dom对象 文本的容器
+ */
+export function textCScale(ele) {
+  const inlineBlockDiv = document.createElement('div')
+  inlineBlockDiv.style.display = 'inline-block'
+  inlineBlockDiv.style.whiteSpace = 'nowrap'
+  inlineBlockDiv.style.transformOrigin = 'left center'
+  const text = ele.innerText
+  inlineBlockDiv.innerHTML = text
+  ele.innerHTML = ''
+  ele.appendChild(inlineBlockDiv)
+  if (inlineBlockDiv.clientWidth <= ele.clientWidth) {
+    inlineBlockDiv.style.transform = 'none';
+  } else {
+    let r = ele.clientWidth / inlineBlockDiv.clientWidth;
+    inlineBlockDiv.style.transform = 'scale(' + r + ')';
+  }
+}
