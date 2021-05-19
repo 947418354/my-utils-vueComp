@@ -46,6 +46,21 @@ function formatDate(date, join) {
 }
 
 /**
+ * 以指定格式输出日期对象
+ * @param {*} date 日期对象
+ * @param {*} format 输出格式 比如 YYYY-MM-DD
+ * @returns 
+ */
+ export function pFormatDate(date, format) {
+  const year = date.getFullYear()
+  let month = '' + (date.getMonth() + 1)
+  var day = '' + date.getDate()
+  if (month.length < 2) month = '0' + month
+  if (day.length < 2) day = '0' + day
+  return format.replace('YYYY', year).replace('MM', month).replace('DD', day)
+}
+
+/**
  * 获取某个月的天数
  * @param {*} month 
  * @param {*} isLeap 
