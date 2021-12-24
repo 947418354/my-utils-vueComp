@@ -1,32 +1,4 @@
 /* eslint-disable */
-/**
- * 数组去重
- * @param {待去重数组} arr 
- */
-export function arrDelSame(arr) {
-  var result = [];
-  for (var i = 0, len = arr.length; i < len; i++) {
-    if (!~result.indexOf(arr[i])) {
-      result.push(arr[i]);
-    }
-  }
-  return result
-}
-
-/**
- * 在对象数组中寻找带有指定键值对的对象
- * @param {键} key
- * @param {值} val
- * @param {对象数组} arr
- */
-export function getObjInobjArrByPropVal (key, val, arr) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i][key] === val) {
-      return arr[i]
-    }
-  }
-  return null
-}
 
 function addChildren(arr, treeArr) {
   let ifFind = false
@@ -103,4 +75,38 @@ export function twoArrToTree(twoArr) {
     addChildren(ele, tree)
   })
   return tree
+}
+
+
+export default {
+  /**
+ * 对象数组扁平化 通过属性
+ */
+  objArrPlatByProp(arr, prop) {
+    let resArr = []
+    if (!arr) return resArr
+    arr.forEach(ele => {
+      resArr.push(ele)
+      resArr = resArr.concat(this.objArrPlatByProp(ele[prop], prop))
+    })
+    return resArr
+  },
+  /**
+   * 对象数组深度
+   */
+  objArrDeep(arr, prop, level = 0) {
+    let deep
+    function objArrDeep1(arr, prop, level) {
+      if (level === 0) deep = 0
+      arr.forEach(obj => {
+        if (obj[prop] && obj[prop].length) {
+          objArrDeep1(obj[prop], prop, level + 1)
+        } else {
+          deep = Math.max(deep, level + 1)
+        }
+      })
+    }
+    objArrDeep1(arr, prop, level)
+    return deep
+  }
 }
