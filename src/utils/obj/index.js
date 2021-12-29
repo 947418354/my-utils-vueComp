@@ -1,31 +1,4 @@
 /* eslint-disable */
-//浅拷贝函数
-function shallowCopy(target){
-	var obj;
-	var str = Object.prototype.toString.call(target);
-	if(str == '[object Array]'){
-		obj = [];
-		for (var i = 0; i < target.length; i++) {
-			obj.push(target[i]);
-		}
-	}else if(str == '[object Object]'){
-		obj = {};
-		for(var i in target){
-			obj[i] = target[i];
-		}
-	}else{
-		return target;
-	}
-	return obj;
-}
-
-//深拷贝函数
-function deepCopy (obj) {
-	if (obj === null || typeof obj !== 'object') return obj;
-	var cpObj = obj instanceof Array ? [] : {};
-	for (var key in obj) cpObj[key] = deepCopy(obj[key]);
-	return cpObj;
-}
 
 // 是否为空对象
 export function isEmptyObject(o) {
@@ -46,12 +19,27 @@ export function checkObjectValues(data) {
   return true;
 }
 
-export {
-  shallowCopy,
-  deepCopy
+const objectUtils = {
+	/**
+	 * 对象指定属性叶子结点数量
+	 */
+	leafNum(obj, prop) {
+		let leafNum = 0
+		function leafNum1(obj, prop) {
+			if (obj[prop] && obj[prop].length) {
+				obj[prop].forEach(obj1 => {
+					if (obj1[prop] && obj1[prop].length) {
+						leafNum1(obj1, prop)
+					} else {
+						leafNum++
+					}
+				})
+			}
+		}
+		leafNum1(obj, prop)
+		return leafNum
+	},
 }
 
-export default {
-  shallowCopy,
-  deepCopy
-}
+export default objectUtils
+

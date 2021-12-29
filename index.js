@@ -1,5 +1,7 @@
+import obj from './src/utils/obj'
 import array from './src/utils/arr'
 
 export default {
-  ...array
+  ...obj,
+  ...array,
 }
