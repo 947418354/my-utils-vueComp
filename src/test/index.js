@@ -1,8 +1,15 @@
-// const objectUtils = require('../utils/obj')
+import arrayUtils from '../utils/arr'
 import objectUtils from '../utils/obj'
 
+// console.log(arrayUtils.objArrLevels([{}]))
+console.log(arrayUtils.objArrLevels([{
+  childs: [
+    {},
+    {}
+  ]
+}]))
 // console.log(objectUtils.leafNum({}, 'childs'), 0)
-console.log(objectUtils.leafNum({
+/* console.log(objectUtils.leafNum({
   childs: [
     {prop: 'prop1'},
     {prop: 'prop2'}
@@ -18,4 +25,4 @@ console.log(objectUtils.leafNum({
     },
     {}
   ]
-}, 'childs'), 3)
+}, 'childs'), 3) */

@@ -94,7 +94,7 @@ export default {
   /**
    * 对象数组深度
    */
-  objArrDeep(arr, prop, level = 0) {
+  objArrDeep(arr, prop = 'childs', level = 0) {
     let deep
     function objArrDeep1(arr, prop, level) {
       if (level === 0) deep = 0
@@ -108,5 +108,24 @@ export default {
     }
     objArrDeep1(arr, prop, level)
     return deep
-  }
+  },
+  /**
+   * 数组级化
+   * 生成一个二维数组,0号位是1级元素,1号位是2级元素...
+   */
+  objArrLevels(arr, prop = 'childs', level = 0) {
+    if(!(arr && arr.length)) return []
+    let levelsArr = []
+    function objArrLevels1(arr, prop, level) {
+      Array.isArray(levelsArr[level]) || (levelsArr[level] = [])
+      arr.forEach(obj => {
+        levelsArr[level].push(obj)
+        if (obj[prop] && obj[prop].length) {
+          objArrLevels1(obj[prop], prop, level + 1)
+        }
+      })
+    }
+    objArrLevels1(arr, prop, level)
+    return levelsArr
+  },
 }
