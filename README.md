@@ -3,3 +3,7 @@
 ## 测试
 webpack
 npm run test
+
+## 蓝湖
+pxToRpx 蓝湖当中px转rpx,将脚本复制到控制台执行一次就可以了
+src\lanhu\pxToRpx.js
